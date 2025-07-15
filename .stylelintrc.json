@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "rules": {
+    "indentation": 2,
+    "string-quotes": "single",
+    "no-duplicate-selectors": true,
+    "color-hex-case": "lower",
+    "color-hex-length": "short",
+    "color-named": "never",
+    "selector-max-id": 1,
+    "selector-combinator-space-after": "always",
+    "selector-attribute-operator-space-before": "never",
+    "selector-attribute-operator-space-after": "never",
+    "selector-attribute-brackets-space-inside": "never",
+    "declaration-block-trailing-semicolon": "always",
+    "declaration-colon-space-before": "never",
+    "declaration-colon-space-after": "always",
+    "number-leading-zero": "always",
+    "function-url-quotes": "always",
+    "font-family-name-quotes": "always-where-recommended",
+    "comment-whitespace-inside": "always",
+    "comment-empty-line-before": "always",
+    "at-rule-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "max-nesting-depth": 3,
+    "selector-max-compound-selectors": 4,
+    "selector-max-specificity": "0,4,0",
+    "declaration-no-important": true,
+    "property-blacklist": [],
+    "unit-blacklist": ["pt", "cm", "mm", "in", "pc"],
+    "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "selector-id-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
+  }
+}

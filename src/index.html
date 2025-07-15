@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Suite Pro - Transkription & Textbearbeitung</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6">
+  <div class="w-full max-w-6xl main-container p-5 sm:p-6 md:p-8">
+    <header class="main-header flex justify-between items-center mb-6 pb-5">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <i class="fas fa-headphones-alt text-4xl sm:text-5xl app-icon" aria-hidden="true"></i>
+        <h1 id="app-title" class="text-3xl sm:text-4xl font-bold app-title" data-translate="app_title_header">Audio Suite Pro</h1>
+      </div>
+      <div class="flex items-center gap-1 sm:gap-2">
+        <button id="btn-audio-fallback-open" class="header-button text-xl" data-translate-title="audio_fallback_tooltip" title="Audio-Archiv anzeigen">
+            <i class="fas fa-hdd" aria-hidden="true"></i>
+        </button>
+        <button id="theme-toggle-button" class="header-button text-lg" data-translate-title="theme_toggle_tooltip" title="Design wechseln">
+            <i class="fas fa-moon" aria-hidden="true"></i><i class="fas fa-sun" aria-hidden="true"></i>
+        </button>
+        <div class="language-switcher">
+            <button id="btn-language-toggle" class="header-button text-xl" data-translate-title="language_tooltip" title="Sprache wechseln">
+                <i class="fas fa-language" aria-hidden="true"></i>
+            </button>
+            <div id="language-dropdown-menu" class="language-dropdown">
+                <a href="#" data-lang="de" class="lang-option" data-translate="lang_de">Deutsch</a>
+                <a href="#" data-lang="en" class="lang-option" data-translate="lang_en">English</a>
+                <a href="#" data-lang="fr" class="lang-option" data-translate="lang_fr">Français</a>
+                <a href="#" data-lang="es" class="lang-option" data-translate="lang_es">Español</a>
+                <a href="#" data-lang="zh" class="lang-option" data-translate="lang_zh">中文</a>
+                <a href="#" data-lang="ar" class="lang-option" data-translate="lang_ar">العربية</a>
+            </div>
+        </div>
+        <button id="btn-vocab-open" class="action-button btn-secondary py-2 px-4 text-sm"><i class="fas fa-book mr-1.5" aria-hidden="true"></i><span data-translate="vocabulary">Vokabular</span></button>
+        <div class="settings-icon-wrapper">
+            <button id="btn-settings-open" class="header-button text-xl" data-translate-title="settings_tooltip" title="Einstellungen">
+                <i class="fas fa-cog" aria-hidden="true"></i>
+            </button>
+            <div id="api-key-status-dot" class="api-key-status-dot"></div>
+        </div>
+      </div>
+    </header>
+
+    <div id="settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title-h3">
+        <div class="modal-content relative">
+            <button id="btn-settings-close-modal" class="modal-close-btn" aria-label="Einstellungen schließen">&times;</button>
+            <h3 id="settings-modal-title-h3" class="modal-title" data-translate="settings_title">Einstellungen</h3>
+            
+            <div class="mb-6">
+                <label for="modal-input-api-key" class="form-label" data-translate="openai_api_key_label">OpenAI API-Key</label>
+                <div class="flex space-x-3 items-center">
+                    <input id="modal-input-api-key" type="password" class="form-input flex-1" data-translate-placeholder="api_key_placeholder_modal" placeholder="sk-..." autocomplete="new-password" />
+                    <button id="modal-btn-key-save" class="action-button btn-primary py-2.5 px-5 text-sm whitespace-nowrap" data-translate="save_button">Speichern</button>
+                </div>
+                <p id="modal-key-status" class="mt-2.5 text-xs" data-translate="api_key_status_default">Gib deinen OpenAI API-Key ein.</p>
+                <button id="modal-btn-key-remove" class="mt-3.5 text-xs text-rose-400 hover:text-rose-300 hidden focus:outline-none focus:underline font-medium"><i class="fas fa-trash-alt mr-1.5" aria-hidden="true"></i> <span data-translate="remove_api_key_button">API-Key entfernen</span></button>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-10">
+               <button id="btn-settings-modal-close-footer" class="action-button btn-neutral py-2.5 px-6 text-sm" data-translate="close_button">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="vocab-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="vocab-modal-title-h3">
+      <div class="modal-content relative">
+        <button id="btn-vocab-close-modal-x" class="modal-close-btn" aria-label="Vokabular schließen">&times;</button>
+        <h3 id="vocab-modal-title-h3" class="modal-title" data-translate="custom_vocabulary_title">Eigenes Vokabular</h3>
+
+        <div class="flex gap-3 mb-5">
+            <input type="text" id="new-vocab-term" class="form-input flex-grow" data-translate-placeholder="new_vocab_term_placeholder" placeholder="Neuen Begriff eingeben...">
+            <button id="btn-add-vocab-term" class="action-button btn-primary py-2.5 px-5 text-sm whitespace-nowrap"><i class="fas fa-plus mr-1.5" aria-hidden="true"></i><span data-translate="add_button">Hinzufügen</span></button>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-5">
+            <input type="file" id="vocab-file-import" class="hidden" accept=".txt">
+            <button id="btn-vocab-import-txt" class="action-button btn-secondary py-2 px-4 text-sm"><i class="fas fa-upload mr-1.5" aria-hidden="true"></i><span data-translate="import_txt_button">.txt Importieren</span></button>
+            <button id="btn-vocab-export-txt" class="action-button btn-secondary py-2 px-4 text-sm"><i class="fas fa-download mr-1.5" aria-hidden="true"></i><span data-translate="export_txt_button">.txt Exportieren</span></button>
+        </div>
+        
+        <div class="max-h-64 overflow-y-auto border border-slate-600 rounded-lg p-1 bg-slate-700/30 mb-5 shadow-inner">
+            <table id="vocab-table" class="w-full text-sm text-left">
+                <thead class="text-xs text-sky-300 uppercase bg-slate-700 sticky top-0 shadow-sm">
+                    <tr>
+                        <th scope="col" class="px-4 py-3" data-translate="term_column">Begriff</th>
+                        <th scope="col" class="px-4 py-3 text-right" data-translate="action_column">Aktion</th>
+                    </tr>
+                </thead>
+                <tbody id="vocab-table-body">
+                </tbody>
+            </table>
+            <p id="vocab-table-empty-msg" class="text-center py-5 hidden" data-translate="no_vocabulary_message">Kein Vokabular vorhanden.</p>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-8">
+           <button id="btn-vocab-modal-close-footer" class="action-button btn-neutral py-2.5 px-6 text-sm" data-translate="close_button">Schließen</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="audio-fallback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="audio-fallback-modal-title-h3">
+        <div class="modal-content relative !max-w-2xl"> 
+            <button id="btn-audio-fallback-close-modal-x" class="modal-close-btn" aria-label="Audio-Archiv schließen">&times;</button>
+            <h3 id="audio-fallback-modal-title-h3" class="modal-title" data-translate="audio_fallbacks_title">Audio-Archiv</h3>
+            
+            <div id="audio-fallback-list" class="space-y-3 mb-5">
+                </div>
+            <p id="audio-fallback-empty-msg" class="text-center py-5 text-slate-400 hidden" data-translate="no_audio_fallbacks_message">Kein Audio-Archiv verfügbar.</p>
+    
+            <div class="flex justify-end gap-3 mt-8">
+               <button id="btn-audio-fallback-modal-close-footer" class="action-button btn-neutral py-2.5 px-6 text-sm" data-translate="close_button">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-8">
+      <div>
+        <label for="select-lang" class="form-label" data-translate="audio_language_label">Sprache des Audios (ISO 639-1):</label>
+        <select id="select-lang" class="form-select w-full">
+          <option value="" data-translate="auto_detect_option">Automatisch erkennen</option>
+          </select>
+      </div>
+      <div class="md:col-span-1">
+        <label for="input-prompt" class="form-label" data-translate="transcription_context_label">Kontext/Prompt für Transkription:</label>
+        <input id="input-prompt" type="text" class="form-input w-full" data-translate-placeholder="transcription_context_placeholder" placeholder="z.B. Juristisches Diktat, Fachbegriffe" />
+      </div>
+      <div>
+        <label for="input-temperature" class="form-label relative group">
+            <span data-translate="transcription_temperature_label">Transkriptions-Temperatur (0-1):</span>
+            <i class="fas fa-info-circle tooltip-icon" aria-hidden="true"></i>
+            <span class="tooltip-text" data-translate="temperature_tooltip">
+                Niedriger (z.B. 0) = fokussierter, höher (z.B. 0.8) = kreativer. Standard: 0.
+            </span>
+        </label>
+        <input id="input-temperature" type="number" min="0" max="1" step="0.1" value="0" class="form-input w-full" />
+      </div>
+    </div>
+
+    <div class="mb-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button id="btn-record" class="action-button record-button-start w-full sm:w-auto"><i class="fas fa-microphone mr-2.5" aria-hidden="true"></i><span id="record-label" data-translate="start_recording_button">Aufnahme starten</span></button>
+        <label for="file-upload" class="action-button btn-primary cursor-pointer w-full sm:w-auto text-center">
+            <i class="fas fa-upload mr-2.5" aria-hidden="true"></i><span data-translate="upload_file_button">Datei hochladen</span>
+        </label>
+        <input type="file" id="file-upload" accept="audio/*,video/*" class="hidden">
+    </div>
+    <p class="text-center text-xs text-slate-500 mb-6" id="f5-hint" data-translate="f5_hint">(Tipp: F5 zum Starten/Stoppen der Aufnahme)</p>
+    <p id="file-name" class="text-center text-sm text-slate-400 mb-6"></p>
+
+    <div class="mb-8 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-4 text-sm">
+      <label class="flex items-center form-checkbox-label"><input id="chk-diarize" type="checkbox" class="form-checkbox mr-2" /><span data-translate="recognize_speakers_checkbox">Sprecher erkennen</span></label>
+      <label class="flex items-center form-checkbox-label"><input id="chk-auto-refine" type="checkbox" class="form-checkbox mr-2" /><span data-translate="direct_ai_improvement_checkbox">Direkt KI-Verbesserung</span></label>
+      <label class="flex items-center form-checkbox-label"><input id="chk-continuous" type="checkbox" class="form-checkbox mr-2" /><span data-translate="continuous_transcription_checkbox">Fortlaufende Transkription</span></label>
+      <label class="flex items-center form-checkbox-label"><input id="chk-time-tracking" type="checkbox" class="form-checkbox mr-2" /><span data-translate="time_tracking_dictation_checkbox">Zeiterfassungsdiktat</span></label>
+    </div>
+
+    <div id="audioVisualizerContainer" class="hidden mb-6">
+      <p class="text-xs text-slate-400 text-center mb-1.5" data-translate="audio_level_label">Audiopegel:</p>
+      <div id="audioVisualizer"></div>
+    </div>
+
+    <div id="status-area" class="mb-6 text-center min-h-[60px] flex flex-col items-center justify-center">
+      <p id="status-text" class="italic text-base"></p>
+      <div id="status-loader" class="loader hidden"></div>
+    </div>
+
+    <div class="mb-3">
+      <label for="txt-transcript" class="form-label text-lg" data-translate="transcript_text_label">Transkript / Text</label>
+      <textarea id="txt-transcript" rows="12" class="form-input w-full p-3.5 text-base leading-relaxed shadow-lg" data-translate-placeholder="transcript_placeholder" placeholder="Transkript erscheint hier..."></textarea>
+      <div id="text-stats" class="text-xs mt-2 text-right"><span data-translate="words_stats">Wörter</span>: 0 | <span data-translate="characters_stats">Zeichen</span>: 0</div>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 mb-8">
+      <button id="btn-copy" class="action-button btn-secondary" disabled><i class="fas fa-copy mr-1.5" aria-hidden="true"></i><span data-translate="copy_button">Kopieren</span></button>
+      <button id="btn-send-email" class="action-button btn-secondary" disabled><i class="fas fa-envelope mr-1.5" aria-hidden="true"></i><span data-translate="send_email_button">An E-Mail senden</span></button>
+      <button id="btn-export-txt" class="action-button btn-secondary" disabled><i class="fas fa-file-alt mr-1.5" aria-hidden="true"></i><span data-translate="export_txt_action_button">Als .txt exportieren</span></button>
+      <button id="btn-refine" class="action-button btn-secondary" disabled><i class="fas fa-magic mr-1.5" aria-hidden="true"></i><span data-translate="refine_text_button">Text glätten</span></button>
+      <button id="btn-add-manual-vocab" class="action-button btn-tertiary" disabled><i class="fas fa-book-medical mr-1.5" aria-hidden="true"></i><span data-translate="text_to_vocab_button">Text zum Vokabular</span></button>
+      <button id="btn-summarize" class="action-button btn-secondary" disabled><i class="fas fa-list-alt mr-1.5" aria-hidden="true"></i><span data-translate="summarize_button">Zusammenfassen</span></button>
+      <button id="btn-tts" class="action-button btn-secondary" disabled><i class="fas fa-volume-up mr-1.5" aria-hidden="true"></i><span data-translate="read_aloud_button">Vorlesen</span></button>
+      <button id="btn-clear" class="action-button btn-danger" disabled><i class="fas fa-trash mr-1.5" aria-hidden="true"></i><span data-translate="delete_button">Löschen</span></button>
+    </div>
+    
+    <div id="summarize-section" class="mb-8 hidden">
+        <label for="txt-summary" class="form-label text-lg" data-translate="summary_label">Zusammenfassung</label>
+        <textarea id="txt-summary" rows="6" class="form-input w-full p-3.5 text-base leading-relaxed shadow-lg bg-slate-700/50" readonly data-translate-placeholder="summary_placeholder" placeholder="Zusammenfassung erscheint hier..."></textarea>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div id="translation-section" class="mb-8">
+      <h2 class="section-title" data-translate="ai_translation_title">Textübersetzung durch KI</h2>
+      <div class="flex flex-col sm:flex-row items-end gap-4 mb-5">
+        <div class="flex-grow w-full sm:w-auto">
+          <label for="select-translate-lang" class="form-label" data-translate="target_language_label">Zielsprache:</label>
+          <select id="select-translate-lang" class="form-select w-full">
+            <option value="" data-translate="select_language_option">-- Sprache wählen --</option>
+            <option value="en-US" data-translate="lang_translate_en_us">Englisch (US)</option>
+            <option value="de" data-translate="lang_translate_de">Deutsch</option>
+            <option value="fr" data-translate="lang_translate_fr">Französisch</option>
+            <option value="es" data-translate="lang_translate_es">Spanisch</option>
+            <option value="it" data-translate="lang_translate_it">Italienisch</option>
+            <option value="pt-BR" data-translate="lang_translate_pt_br">Portugiesisch (BR)</option>
+            <option value="nl" data-translate="lang_translate_nl">Niederländisch</option>
+            <option value="pl" data-translate="lang_translate_pl">Polnisch</option>
+            <option value="sv" data-translate="lang_translate_sv">Schwedisch</option>
+            <option value="ru" data-translate="lang_translate_ru">Russisch</option>
+            <option value="zh-CN" data-translate="lang_translate_zh_cn">Chinesisch (Vereinfacht)</option>
+            <option value="ja" data-translate="lang_translate_ja">Japanisch</option>
+            <option value="ko" data-translate="lang_translate_ko">Koreanisch</option>
+            <option value="ar" data-translate="lang_translate_ar">Arabisch</option>
+          </select>
+        </div>
+        <button id="btn-translate" class="action-button btn-primary w-full sm:w-auto" disabled data-translate="translate_button">Übersetzen</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label for="txt-source" class="form-label" data-translate="source_text_label">Ausgangstext:</label>
+          <textarea id="txt-source" rows="10" class="form-input w-full p-3.5 text-base leading-relaxed shadow-md bg-slate-700/40" readonly></textarea>
+        </div>
+        <div>
+          <label for="txt-translated" class="form-label" data-translate="translated_text_label">Übersetzter Text:</label>
+          <textarea id="txt-translated" rows="10" class="form-input w-full p-3.5 text-base leading-relaxed shadow-md" readonly data-translate-placeholder="translation_placeholder" placeholder="Übersetzung erscheint hier..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div id="clipboard-history-container" class="mb-6">
+        <div class="flex justify-between items-center mb-5">
+            <h2 class="section-title !text-left !ml-0 !transform-none !border-b-0 !pb-0 !mb-0 after:!hidden" data-translate="history_title">Verlauf</h2>
+            <div class="flex gap-2">
+                <button id="btn-toggle-history" class="action-button btn-secondary py-2 px-4 text-sm" data-translate-title="toggle_history_tooltip" title="Verlauf ein-/ausblenden"><i class="fas fa-history mr-1.5" aria-hidden="true"></i> <span id="toggle-history-label" data-translate="hide_history_button">Verlauf ausblenden</span></button>
+                <button id="btn-history-settings" class="action-button btn-neutral py-2 px-3 text-sm" data-translate-title="history_settings_tooltip" title="Verlaufseinstellungen"><i class="fas fa-cog" aria-hidden="true"></i></button>
+            </div>
+        </div>
+
+        <div id="history-panel-content" class="history-panel-section">
+            <div class="history-actions-bar flex flex-wrap gap-2.5 mb-4 pb-4 border-b">
+                <button id="exportHistoryButton"><i class="fas fa-download mr-1.5" aria-hidden="true"></i> <span data-translate="export_button">Exportieren</span></button>
+                <input type="file" id="importHistoryFile" accept=".json" class="hidden">
+                <label for="importHistoryFile" id="importHistoryFileLabel" role="button" class="cursor-pointer"><i class="fas fa-upload mr-1.5" aria-hidden="true"></i> <span data-translate="import_button">Importieren</span></label>
+                <button id="deleteSelectedHistoryButton" style="display: none;" data-translate-title="delete_selected_tooltip" title="Ausgewählte Einträge löschen"><i class="fas fa-check-double mr-1.5" aria-hidden="true"></i> <span data-translate="delete_selection_button">Auswahl löschen</span></button>
+                <button id="clearHistoryButton" data-translate-title="clear_all_history_tooltip" title="Gesamten Verlauf unwiderruflich löschen"><i class="fas fa-eraser mr-1.5" aria-hidden="true"></i> <span data-translate="clear_all_button">Alles löschen</span></button>
+            </div>
+            <div class="history-filters grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 mb-4">
+                <div>
+                    <label for="dateFilterFrom" class="block text-xs font-medium mb-1.5" data-translate="date_from_label">Von:</label>
+                    <input type="date" id="dateFilterFrom" class="form-input w-full p-2 text-xs history-filter-input">
+                </div>
+                <div>
+                    <label for="dateFilterTo" class="block text-xs font-medium mb-1.5" data-translate="date_to_label">Bis:</label>
+                    <input type="date" id="dateFilterTo" class="form-input w-full p-2 text-xs history-filter-input">
+                </div>
+                <div class="sm:col-span-2 md:col-span-1 flex items-end">
+                    <button id="clearDateFilterButton" class="action-button btn-neutral w-full text-xs py-2.5 px-3" data-translate-title="clear_date_filter_tooltip" title="Datumsfilter zurücksetzen"><i class="fas fa-calendar-times mr-1.5" aria-hidden="true"></i> <span data-translate="clear_filter_button">Filter löschen</span></button>
+                </div>
+            </div>
+            <div class="history-controls flex items-center gap-3.5 mb-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="selectAllHistoryCheckbox" class="form-checkbox mr-2" data-translate-title="select_all_tooltip" title="Alle sichtbaren Einträge auswählen/abwählen">
+                    <label for="selectAllHistoryCheckbox" class="text-xs cursor-pointer form-checkbox-label" data-translate="select_all_label">Alle auswählen</label>
+                </div>
+                <input type="search" id="historySearchInput" data-translate-placeholder="search_history_placeholder" placeholder="Verlauf durchsuchen..." class="form-input flex-grow p-2 text-xs history-filter-input">
+            </div>
+            <div id="clipboardHistoryList" class="history-list max-h-96 overflow-y-auto pr-1.5">
+                </div>
+        </div>
+    </div>
+
+    <div id="history-settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="history-settings-modal-title-h3">
+      <div class="modal-content relative">
+        <button id="btn-history-settings-close-modal-x" class="modal-close-btn" aria-label="Verlaufseinstellungen schließen">&times;</button>
+        <h3 id="history-settings-modal-title-h3" class="modal-title" data-translate="history_settings_title">Verlaufseinstellungen</h3>
+        <div>
+            <label for="maxHistoryItemsInput" class="form-label" data-translate="max_history_items_label">Max. Verlaufseinträge (1-200):</label>
+            <input type="number" id="maxHistoryItemsInput" min="1" max="200" class="form-input w-full mb-5">
+        </div>
+        <div class="flex justify-end gap-3 mt-8">
+            <button id="btn-history-settings-save" class="action-button btn-primary py-2.5 px-5 text-sm" data-translate="save_button">Speichern</button>
+            <button id="btn-history-settings-modal-close-footer" class="action-button btn-neutral py-2.5 px-5 text-sm" data-translate="cancel_button">Abbrechen</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-notification" class="toast"></div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
