@@ -1,0 +1,25 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#gradient)" stroke="#1E40AF" stroke-width="4"/>
+  
+  <!-- Headphones -->
+  <path d="M60 80 Q100 40 140 80" stroke="white" stroke-width="6" fill="none"/>
+  <circle cx="55" cy="85" r="15" fill="white"/>
+  <circle cx="145" cy="85" r="15" fill="white"/>
+  <rect x="48" y="100" width="14" height="25" rx="7" fill="white"/>
+  <rect x="138" y="100" width="14" height="25" rx="7" fill="white"/>
+  
+  <!-- Sound waves -->
+  <path d="M100 60 Q120 70 120 100 Q120 130 100 140" stroke="white" stroke-width="3" fill="none" opacity="0.7"/>
+  <path d="M100 50 Q130 65 130 100 Q130 135 100 150" stroke="white" stroke-width="2" fill="none" opacity="0.5"/>
+  
+  <!-- Text -->
+  <text x="100" y="175" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Audio Suite Pro</text>
+</svg>
