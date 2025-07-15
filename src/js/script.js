@@ -1,3 +1,15 @@
+/**
+ * Audio Suite Pro - Main Application Script
+ * 
+ * A comprehensive web-based audio transcription and text editing tool
+ * Features: Audio recording, AI transcription, multi-language support,
+ * speaker recognition, custom vocabulary, and theme switching
+ * 
+ * @version 1.0.0
+ * @author ChrisDCG
+ * @license MIT
+ */
+
 'use strict'; // Enable strict mode for better error handling and code quality
 
 // --- Translation Data ---
