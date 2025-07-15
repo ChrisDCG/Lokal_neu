@@ -1,6 +1,40 @@
+/**
+ * Audio Suite Pro - Main Application Script
+ * 
+ * A comprehensive web-based audio transcription and text processing application
+ * powered by OpenAI's Whisper API and GPT models.
+ * 
+ * Features:
+ * - Real-time audio recording with visual feedback
+ * - File upload and processing for multiple audio/video formats
+ * - AI-powered transcription using OpenAI Whisper
+ * - Multi-language support and real-time translation
+ * - Text refinement and summarization using GPT
+ * - Speaker recognition and diarization
+ * - Custom vocabulary management
+ * - Transcription history with search and filtering
+ * - Dual theme support (light/dark)
+ * - Internationalization (6 languages)
+ * - Offline-capable with IndexedDB storage
+ * 
+ * @version 1.0.0
+ * @author Audio Suite Pro Team
+ * @license MIT
+ * @see {@link https://github.com/ChrisDCG/Lokal_neu} GitHub Repository
+ */
+
 'use strict'; // Enable strict mode for better error handling and code quality
 
-// --- Translation Data ---
+// ====================================================================
+// TRANSLATION DATA
+// ====================================================================
+// Internationalization support for 6 languages with comprehensive UI coverage
+
+/**
+ * Translation object containing all UI text in supported languages
+ * @type {Object.<string, Object.<string, string>>}
+ * @constant
+ */
 const translations = {
     de: {
         app_title_header: "Audio Suite Pro",
@@ -1273,35 +1307,66 @@ const ZEITERFASSUNG_SYSTEM_PROMPT_DE = `Ziel: Höchste Präzision und Effizienz 
 const ZEITERFASSUNG_SYSTEM_PROMPT_EN = `Goal: Maximum precision and efficiency in time tracking, compliant with international law firm standards in Germany. Accuracy, consistency, and professional structure are essential to optimally document the user's valuable time. Process the transcribed time entries with maximum precision and efficiency. Create structured tables fully compatible with LEXolution.TIME Pro. Automatically add weekdays in the format "DD.MM.YY (Weekday)" and mark missing time entries for later completion. Ensure consistent use of proper names, client names, and technical terms. Use a persistent list to store and query new terms. Actively inquire about differing spellings to determine if they should be permanently adopted. Format the result for easy conversion to CSV or Excel, keeping dynamic cell width adjustment in mind. Insert a daily total after each day and a grand total at the end. Ensure clear, organized formatting according to international law firm standards. Apply the latest prompt engineering insights to maximize efficiency and accuracy. All time entries refer to the last mentioned date until a new date is explicitly stated. An entry is created for each client and each day, bundling all activities and times. Multiple activities for the same client on the same day are separated by semicolons. If time entries are missing, the fields remain empty. The original order of entries is maintained.`;
 
 
+// ====================================================================
+// CONFIGURATION CONSTANTS
+// ====================================================================
+
+/**
+ * OpenAI API endpoint for audio transcription using Whisper model
+ * @constant {string}
+ */
 const OPENAI_TRANSCRIPTION_URL = 'https://api.openai.com/v1/audio/transcriptions';
+
+/**
+ * OpenAI API endpoint for chat completions using GPT models
+ * @constant {string}
+ */
 const OPENAI_CHAT_COMPLETIONS_URL = 'https://api.openai.com/v1/chat/completions';
 
-// --- DOM Elements ---
+// ====================================================================
+// DOM ELEMENT REFERENCES
+// ====================================================================
+
 /**
- * Shortcut for document.getElementById.
- * @param {string} id - The ID of the DOM element.
- * @returns {HTMLElement | null} The DOM element or null if not found.
+ * Shortcut for document.getElementById to reduce code verbosity
+ * @param {string} id - The ID of the DOM element
+ * @returns {HTMLElement | null} The DOM element or null if not found
  */
 const $ = id => document.getElementById(id);
 
+// Main UI controls
 const themeToggleButton = $('theme-toggle-button');
 const chkTimeTracking = $('chk-time-tracking');
+
+// Recording and action buttons
 const btnRecord = $('btn-record'), recordLabel = $('record-label');
 const btnCopy = $('btn-copy'), btnRefine = $('btn-refine'), btnClear = $('btn-clear');
 const btnAddManualVocab = $('btn-add-manual-vocab');
 const btnSummarize = $('btn-summarize'), btnTts = $('btn-tts');
 const btnTranslate = $('btn-translate');
+
+// Text areas and input fields
 const txtTranscript = $('txt-transcript'), txtSource = $('txt-source'), txtTranslated = $('txt-translated');
 const txtSummary = $('txt-summary'), summarizeSection = $('summarize-section');
 const selectLang = $('select-lang'), inputPrompt = $('input-prompt');
 const inputTemperature = $('input-temperature');
+
+// Configuration checkboxes
 const chkDiarize = $('chk-diarize'), chkAutoRefine = $('chk-auto-refine'), chkContinuous = $('chk-continuous');
+
+// Translation controls
 const selectTranslateLang = $('select-translate-lang');
+
+// Status and visualization elements
 const statusText = $('status-text'), statusLoader = $('status-loader');
 const audioVisContainer = $('audioVisualizerContainer'), audioVis = $('audioVisualizer');
 const textStats = $('text-stats');
+
+// Export and sharing buttons
 const btnSendEmail = $('btn-send-email');
 const btnExportTxt = $('btn-export-txt');
+
+// Settings modal elements
 const btnSettingsOpen = $('btn-settings-open');
 const settingsModal = $('settings-modal');
 const btnSettingsCloseModalX = $('btn-settings-close-modal');

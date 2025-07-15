@@ -2,15 +2,16 @@
 
 <div align="center">
 
-![Audio Suite Pro Logo](assets/logo.svg)
+![Audio Suite Pro Banner](assets/banner.svg)
 
 **A powerful, web-based audio transcription and text processing suite powered by OpenAI**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Demo](https://img.shields.io/badge/Demo-Live-green.svg)](https://chrisdcg.github.io/Lokal_neu/)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](#versioning)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](VERSION.md)
+[![CI](https://github.com/ChrisDCG/Lokal_neu/workflows/CI/badge.svg)](https://github.com/ChrisDCG/Lokal_neu/actions)
 
-[Demo](https://chrisdcg.github.io/Lokal_neu/) • [Documentation](#documentation) • [Contributing](CONTRIBUTING.md) • [Roadmap](ROADMAP.md)
+[Demo](https://chrisdcg.github.io/Lokal_neu/) • [Documentation](#documentation) • [Contributing](CONTRIBUTING.md) • [Roadmap](ROADMAP.md) • [API Guide](docs/API_INTEGRATION.md)
 
 </div>
 
@@ -235,6 +236,15 @@ See our [detailed roadmap](ROADMAP.md) for upcoming features and improvements.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📦 Versioning
+
+We use [Semantic Versioning](https://semver.org/) for versioning. For the versions available, see the [VERSION.md](VERSION.md) file and the [tags on this repository](https://github.com/ChrisDCG/Lokal_neu/tags).
+
+**Current Version:** v1.0.0
+
+### Version History
+- **v1.0.0** - Initial release with complete repository restructure and professional development setup
 
 ## 🙏 Acknowledgments
 

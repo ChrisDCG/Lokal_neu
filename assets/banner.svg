@@ -1,0 +1,77 @@
+<svg width="800" height="200" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="200" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="50" cy="50" r="3" fill="#22d3ee" opacity="0.6"/>
+  <circle cx="750" cy="150" r="4" fill="#0ea5e9" opacity="0.4"/>
+  <circle cx="700" cy="50" r="2" fill="#22d3ee" opacity="0.8"/>
+  <circle cx="100" cy="150" r="3" fill="#0ea5e9" opacity="0.5"/>
+  
+  <!-- Audio wave decorations -->
+  <g opacity="0.3">
+    <path d="M20 100 Q40 80, 60 100 T100 100" stroke="#22d3ee" stroke-width="2" fill="none"/>
+    <path d="M700 100 Q720 80, 740 100 T780 100" stroke="#0ea5e9" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Main icon -->
+  <g transform="translate(80, 60)">
+    <circle cx="40" cy="40" r="35" fill="url(#iconGradient)" stroke="#0891b2" stroke-width="2"/>
+    <!-- Microphone -->
+    <g transform="translate(28, 20)">
+      <rect x="10" y="8" width="6" height="16" rx="3" fill="white"/>
+      <rect x="9" y="24" width="8" height="3" rx="1.5" fill="white"/>
+      <rect x="12" y="27" width="2" height="8" fill="white"/>
+      <!-- Sound waves -->
+      <path d="M4 16 C4 10, 4 10, 4 10 M4 20 C4 26, 4 26, 4 26" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M20 16 C20 10, 20 10, 20 10 M20 20 C20 26, 20 26, 20 26" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- Pulse effect -->
+    <circle cx="40" cy="40" r="45" fill="none" stroke="#22d3ee" stroke-width="1" opacity="0.4"/>
+    <circle cx="40" cy="40" r="55" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+  </g>
+  
+  <!-- Main title -->
+  <text x="200" y="80" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="bold" fill="white">
+    Audio Suite Pro
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="110" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#94a3b8">
+    AI-Powered Audio Transcription &amp; Text Processing
+  </text>
+  
+  <!-- Features -->
+  <g transform="translate(200, 130)">
+    <text x="0" y="0" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#22d3ee">
+      ✨ Real-time Recording
+    </text>
+    <text x="140" y="0" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#22d3ee">
+      🧠 OpenAI Whisper
+    </text>
+    <text x="260" y="0" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#22d3ee">
+      🌍 Multi-language
+    </text>
+    <text x="370" y="0" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#22d3ee">
+      🎨 Modern UI
+    </text>
+  </g>
+  
+  <!-- Bottom accent line -->
+  <rect x="0" y="195" width="800" height="5" fill="url(#accentGradient)"/>
+</svg>

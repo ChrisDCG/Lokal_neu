@@ -52,6 +52,12 @@ jobs:
         # Update paths in root index.html for GitHub Pages
         sed -i 's/src\//.\//g' _site/index.html
         
+        # Fix asset paths in the main application file
+        sed -i 's|href="../assets/|href="./assets/|g' _site/index.html
+        
+        # Copy assets directory
+        cp -r assets _site/
+        
     - name: Setup Pages
       uses: actions/configure-pages@v3
       
