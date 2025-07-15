@@ -1,0 +1,1 @@
+"C:\Program Files\Mozilla Firefox\firefox.exe" -new-window "file:///C:/v29/index.html"
